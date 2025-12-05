@@ -1,0 +1,8 @@
+[package]
+name = "generate-cgroup-skeleton"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libbpf-cargo = "0.24.8"
+libbpf-sys = "=1.5.0"

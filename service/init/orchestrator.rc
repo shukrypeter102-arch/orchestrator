@@ -1,0 +1,128 @@
+# Copyright (C) 2025 Meta Platforms, Inc. and affiliates. All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+service orchestrator /system_ext/bin/orchestrator
+    class late_start
+    class main
+    user system
+    group system readproc
+    task_profiles ServiceCapacityLow ServicePerformance
+    capabilities DAC_READ_SEARCH KILL SYS_ADMIN SYS_PTRACE SYSLOG
+    gentle_kill
+    disabled # disabled by default
+
+on post-fs-data
+  mkdir /data/misc/orchestrator 0770 system system
+
+# Start orchestrator service when any of the five sysprops are enabled (true)
+on property:persist.device_config.hzos_system_native.memflow_staticexp=true
+    start orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp=true
+    start orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp=true
+    start orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_telemetry=true
+    start orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_heap_telemetry=true
+    start orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_throttle=true
+    start orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_budget_enforcement_enabled=true
+    start orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_immersiveslaexp=true
+    start orchestrator
+
+# Stop orchestrator service when all seven sysprops are disabled (false or unset)
+on property:persist.device_config.hzos_system_native.memflow_staticexp=false && property:persist.device_config.hzos_system_native.memflow_sysexp=false && property:persist.device_config.hzos_system_native.memflow_syssenpaiexp=false && property:persist.device_config.hzos_system_native.memflow_telemetry=false && property:persist.device_config.hzos_system_native.memflow_heap_telemetry=false && property:persist.device_config.hzos_system_native.memflow_throttle=false && property:persist.device_config.hzos_system_native.memflow_immersiveslaexp=false && property:persist.device_config.hzos_system_native.memflow_budget_enforcement_enabled=false
+    stop orchestrator
+
+# Restart orchestrator service when any configuration property changes (only if service is already running)
+on property:persist.device_config.hzos_system_native.memflow_staticexp_list=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp_deadband=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp_i_gain=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp_integral_max=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp_output_max=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp_output_min=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp_p_gain=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp_setpoint=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_sysexp_tick_rate=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp_coeff_backoff=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp_coeff_probe=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp_interval=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp_max_backoff=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp_max_probe=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp_max_size=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp_min_size=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_syssenpaiexp_pressure=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_telemetry_tick_rate=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_heap_telemetry_tick_rate=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_heap_telemetry_threshold_kib=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_throttle_tick_rate=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_throttle_duration_ms=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_immersiveslaexp_hard=*
+    restart --only-if-running orchestrator
+
+on property:persist.device_config.hzos_system_native.memflow_immersiveslaexp_soft=*
+    restart --only-if-running orchestrator

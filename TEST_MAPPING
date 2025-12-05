@@ -1,0 +1,10 @@
+{
+  "presubmit": [
+    {
+      "name": "memflow_tests"
+    },
+    {
+      "name": "cpuflow_bpf_test"
+    }
+  ]
+}
