@@ -22,6 +22,18 @@ state.
   is centralized, providing a single point of control and visibility.
 - **Written in Rust**: Memory-safe, performant, and reliable
 
+## Branding & Contact
+
+This repository's documentation has been updated to reflect branding for PMCosmetics.
+
+- Display name: `PMCosmetics`
+- Recommended Package / Bundle ID for examples: `com.pmcosmetics`
+- Recommended artifact short name: `pmcosmetics`
+
+Support / Contact
+
+For questions about PMCosmetics distributions and publishing, contact via WhatsApp: https://wa.me/c/201055655649
+
 ## Building and Installing
 
 ### Build Requirements
